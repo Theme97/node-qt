@@ -16,15 +16,15 @@
 //       names of contributors may be used to endorse or promote products
 //       derived from this software without specific prior written permission.
 //
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
-// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
 // ARE DISCLAIMED. IN NO EVENT SHALL ARTUR ADIB BE LIABLE FOR ANY
 // DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 // (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 // LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 // ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF 
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 var assert = require('assert'),
@@ -32,7 +32,7 @@ var assert = require('assert'),
     path = require('path'),
     qt = require('..'),
     test = require('./test');
-    
+
 var app = new qt.QApplication();
 
 // Constants
@@ -68,12 +68,12 @@ var width = 100, height = 100;
 {
   var pixmap1 = new qt.QPixmap(100, 100);
   var pixmap2 = new qt.QPixmap(100, 100);
-  var painter = new qt.QPainter;
+  var painter = new qt.QPainter();
   painter.begin(pixmap1);
 
   painter.drawPixmap(0, 0, pixmap2);
 
-  painter.end(); // calling .end() before leaving scope ensures pixmaps won't 
+  painter.end(); // calling .end() before leaving scope ensures pixmaps won't
                  // get GC'd before painter is done (segfault!)
 }
 
@@ -90,28 +90,28 @@ var width = 100, height = 100;
   }
   assert.ok(flag, 'drawPixmap should throw error with bad args');
 
-  painter.end(); // calling .end() before leaving scope ensures pixmaps won't 
+  painter.end(); // calling .end() before leaving scope ensures pixmaps won't
                  // get GC'd before painter is done (segfault!)
 }
 
 // strokePath() - crash test
 {
   var pixmap1 = new qt.QPixmap(100, 100);
-  var painter = new qt.QPainter;
+  var painter = new qt.QPainter();
   painter.begin(pixmap1);
 
-  var path = new qt.QPainterPath;
-  var pen = new qt.QPen;
+  var path = new qt.QPainterPath();
+  var pen = new qt.QPen();
   painter.strokePath(path, pen);
 
-  painter.end(); // calling .end() before leaving scope ensures pixmaps won't 
+  painter.end(); // calling .end() before leaving scope ensures pixmaps won't
                  // get GC'd before painter is done (segfault!)
 }
 
 // strokePath() - wrong args
 {
   var pixmap1 = new qt.QPixmap(100, 100);
-  var painter = new qt.QPainter;
+  var painter = new qt.QPainter();
   painter.begin(pixmap1);
 
   var flag = false;
@@ -122,26 +122,26 @@ var width = 100, height = 100;
   }
   assert.ok(flag, 'strokePath should throw error with bad args');
 
-  painter.end(); // calling .end() before leaving scope ensures pixmaps won't 
+  painter.end(); // calling .end() before leaving scope ensures pixmaps won't
                  // get GC'd before painter is done (segfault!)
 }
 
 // setPen() - crash test only
 {
   var pixmap1 = new qt.QPixmap(100, 100);
-  var painter = new qt.QPainter;
+  var painter = new qt.QPainter();
   painter.begin(pixmap1);
 
-  painter.setPen(new qt.QPen);
+  painter.setPen(new qt.QPen());
 
-  painter.end(); // calling .end() before leaving scope ensures pixmaps won't 
+  painter.end(); // calling .end() before leaving scope ensures pixmaps won't
                  // get GC'd before painter is done (segfault!)
 }
 
 // setPen() - wrong args
 {
   var pixmap1 = new qt.QPixmap(100, 100);
-  var painter = new qt.QPainter;
+  var painter = new qt.QPainter();
   painter.begin(pixmap1);
 
   var flag = false;
@@ -152,26 +152,26 @@ var width = 100, height = 100;
   }
   assert.ok(flag, 'setPen should throw error with bad args');
 
-  painter.end(); // calling .end() before leaving scope ensures pixmaps won't 
+  painter.end(); // calling .end() before leaving scope ensures pixmaps won't
                  // get GC'd before painter is done (segfault!)
 }
 
 // setFont() - crash test
 {
   var pixmap1 = new qt.QPixmap(100, 100);
-  var painter = new qt.QPainter;
+  var painter = new qt.QPainter();
   painter.begin(pixmap1);
 
-  painter.setFont(new qt.QFont);
+  painter.setFont(new qt.QFont());
 
-  painter.end(); // calling .end() before leaving scope ensures pixmaps won't 
+  painter.end(); // calling .end() before leaving scope ensures pixmaps won't
                  // get GC'd before painter is done (segfault!)
 }
 
 // setFont() - wrong args
 {
   var pixmap1 = new qt.QPixmap(100, 100);
-  var painter = new qt.QPainter;
+  var painter = new qt.QPainter();
   painter.begin(pixmap1);
 
   var flag = false;
@@ -182,26 +182,26 @@ var width = 100, height = 100;
   }
   assert.ok(flag, 'setPen should throw error with bad args');
 
-  painter.end(); // calling .end() before leaving scope ensures pixmaps won't 
+  painter.end(); // calling .end() before leaving scope ensures pixmaps won't
                  // get GC'd before painter is done (segfault!)
 }
 
 // setMatrix() - crash test only
 {
   var pixmap1 = new qt.QPixmap(100, 100);
-  var painter = new qt.QPainter;
+  var painter = new qt.QPainter();
   painter.begin(pixmap1);
 
-  painter.setMatrix(new qt.QMatrix);
+  painter.setMatrix(new qt.QMatrix());
 
-  painter.end(); // calling .end() before leaving scope ensures pixmaps won't 
+  painter.end(); // calling .end() before leaving scope ensures pixmaps won't
                  // get GC'd before painter is done (segfault!)
 }
 
 // setMatrix() - wrong args
 {
   var pixmap1 = new qt.QPixmap(100, 100);
-  var painter = new qt.QPainter;
+  var painter = new qt.QPainter();
   painter.begin(pixmap1);
 
   var flag = false;
@@ -212,7 +212,7 @@ var width = 100, height = 100;
   }
   assert.ok(flag, 'setMatrix should throw error with bad args');
 
-  painter.end(); // calling .end() before leaving scope ensures pixmaps won't 
+  painter.end(); // calling .end() before leaving scope ensures pixmaps won't
                  // get GC'd before painter is done (segfault!)
 }
 
@@ -234,7 +234,7 @@ var width = 100, height = 100;
     var brush = new qt.QBrush(qt.GlobalColor.green);
     var pen = new qt.QPen(brush, 2);
     painter.setPen(pen);
-    
+
     painter.restore();
     painter.drawText(0, 20, "saved");
   });
