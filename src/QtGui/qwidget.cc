@@ -34,6 +34,7 @@
 #include "qwidget.h"
 #include "qmouseevent.h"
 #include "qkeyevent.h"
+#include <iostream>
 
 using namespace v8;
 
@@ -52,6 +53,7 @@ QWidgetImpl::QWidgetImpl(QWidgetImpl* parent) : QWidget(parent) {
   mouseMoveCallback_ = Persistent<Boolean>::New(Boolean::New(false));
   keyPressCallback_ = Persistent<Boolean>::New(Boolean::New(false));
   keyReleaseCallback_ = Persistent<Boolean>::New(Boolean::New(false));
+  closeCallback_ = Persistent<Boolean>::New(Boolean::New(false));
 }
 
 QWidgetImpl::~QWidgetImpl() {
@@ -61,6 +63,7 @@ QWidgetImpl::~QWidgetImpl() {
   mouseMoveCallback_.Dispose();
   keyPressCallback_.Dispose();
   keyReleaseCallback_.Dispose();
+  closeCallback_.Dispose();
 }
 
 void QWidgetImpl::paintEvent(QPaintEvent* e) {
@@ -140,6 +143,21 @@ void QWidgetImpl::keyPressEvent(QKeyEvent* e) {
     QKeyEventWrap::NewInstance(*e)
   };
   Handle<Function> cb = Persistent<Function>::Cast(keyPressCallback_);
+    
+  cb->Call(Context::GetCurrent()->Global(), argc, argv);
+}
+
+void QWidgetImpl::closeEvent(QCloseEvent* e) {
+  e->ignore(); // ensures event bubbles up
+
+  HandleScope scope;
+  
+  if (!closeCallback_->IsFunction())
+    return;
+
+  const unsigned argc = 0;
+  Handle<Value> argv[1] = {};
+  Handle<Function> cb = Persistent<Function>::Cast(closeCallback_);
     
   cb->Call(Context::GetCurrent()->Global(), argc, argv);
 }
@@ -226,6 +244,8 @@ void QWidgetWrap::Initialize(Handle<Object> target) {
       FunctionTemplate::New(KeyPressEvent)->GetFunction());
   tpl->PrototypeTemplate()->Set(String::NewSymbol("keyReleaseEvent"),
       FunctionTemplate::New(KeyReleaseEvent)->GetFunction());
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("closeEvent"),
+      FunctionTemplate::New(closeEvent)->GetFunction());
 
   constructor = Persistent<Function>::New(tpl->GetFunction());
   target->Set(String::NewSymbol("QWidget"), constructor);
@@ -438,6 +458,23 @@ Handle<Value> QWidgetWrap::KeyReleaseEvent(const Arguments& args) {
 
   q->keyReleaseCallback_.Dispose();
   q->keyReleaseCallback_ = Persistent<Function>::New(
+      Local<Function>::Cast(args[0]));
+
+  return scope.Close(Undefined());
+}
+
+//
+// closeEvent()
+// Binds a callback to Qt's event
+//
+Handle<Value> QWidgetWrap::closeEvent(const Arguments& args) {
+  HandleScope scope;
+
+  QWidgetWrap* w = node::ObjectWrap::Unwrap<QWidgetWrap>(args.This());
+  QWidgetImpl* q = w->GetWrapped();
+
+  q->closeCallback_.Dispose();
+  q->closeCallback_ = Persistent<Function>::New(
       Local<Function>::Cast(args[0]));
 
   return scope.Close(Undefined());
