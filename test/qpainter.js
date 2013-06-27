@@ -50,7 +50,14 @@ var width = 100, height = 100;
     paintEventCalled = true;
   });
   widget.show();
-  app.processEvents();
+  var time, startTime = process.hrtime();
+  while(!paintEventCalled) {
+    time = process.hrtime(startTime);
+    if(time[0] >= 5) {
+      assert.fail(time, 5, 'timed out', '<');
+    }
+    app.processEvents();
+  }
   assert.equal( paintEventCalled, true );
 }
 
